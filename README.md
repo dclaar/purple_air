@@ -15,18 +15,15 @@ writing style. :)
 Set up the M5StickC for UIFLow (currently, 1.4.5.1 is the latest) using the
 [M5Burner utility](https://m5stack.com/pages/download). Once this is done, the
 software needs to be loaded onto the M5StickC device. There's a few different
-ways to do this. I've provided a fairly simple way:
+ways to do this.  Alternatives include [rshell](
+https://github.com/dhylands/rshell), or you
+can setup [Visual Studio](https://code.visualstudio.com/) and install the
+m5stack extension.
 
-1. Open UIFlow
-1. Switch to the python tab
-1. Copy `copy_to_stick.py` from the repo and paste it into the window.
-1. Modify this line with the IP address of your purple air device:
-   ```
-   file_data = '{"ip_addr": "192.168.x.y"}\n'
-   ```
-1. Click the triangle "play" button. This will copy `AQI.py` to the `flash/apps`
-directory, and the `m5stickc.py` library and `aqi.json` config file to the
-`flash` directory. You will not need `copy_to_stick.py` any more.
+If you have a 1.5.x or greater version (I currently can't recommend it),
+I've set up a _relatively_ simple [set of steps](copy_to_stick.md) that
+may or may not work: Currently, 1.5.x doesn't support USB mode, so they
+definitely don't work now! Nor does rshell, or the UiFlow GUI.
 
 ## Run
 
