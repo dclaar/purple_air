@@ -20,9 +20,16 @@ https://github.com/dhylands/rshell), or you
 can setup [Visual Studio](https://code.visualstudio.com/) and install the
 m5stack extension.
 
-If you have a 1.5.x or greater version (currently in Beta, caveat installer),
+If you have a 1.5.x or greater version of UiFlow (it's BETA, caveat installer),
 I've set up a _relatively_ simple [set of steps](copy_to_stick.md) to
 use the UiFlow GUI to make the copy. 
+
+_As noted above, 1.5 is currently in Beta, and it is *really* hard to use
+tools like rshell: You can only connect maybe 5% of the time. So I can't
+really recommend it yet if you want to do local development.
+But [https isn't broken](
+https://github.com/m5stack/UiFlow-Bug-Report/issues/34). That doesn't
+matter for the main code in this repo, but it does break the easy install._
 
 ## Run
 
