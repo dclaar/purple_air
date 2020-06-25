@@ -36,7 +36,7 @@ Connect()
 with open(b'aqi.json', 'w+') as fh:
   fh.write(str(ip_data))
 for file in FILES:
-  url = '%s/%s % (URL, file)
+  url = '%s/%s' % (URL, file)
   lcd.print('copying %r' % file)
   try:
     resp = urequests.request(method='GET', url=url)
