@@ -4,7 +4,7 @@ from uiflow import *
 import urequests
 import wifiCfg
 
-ip_data = '{"ip_addr": "192.168.6.67"}\n'   #  <-- Purple air IP address here!
+ip_data = '{"ip_addr": "192.168.x.y"}\n'   #  <-- Purple air IP address here!
 
 URL = 'https://raw.githubusercontent.com/dclaar/purple_air/main/flash'
 FILES = ['m5stickc.py', 'apps/AQI.py']
