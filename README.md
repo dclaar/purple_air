@@ -59,6 +59,8 @@ Then start displaying the air quality.
 
 ## Features
 
+- Uses the JSON endpoint's built-in 120 second average, which is updated every
+  10 seconds
 - Uses accelerometer to display text correctly with device on either side.
 - Uses the WiFi credentials that were setup in M5Burner.
 - All of the hardware-specific code is abstracted to m5stick.py, so it is
