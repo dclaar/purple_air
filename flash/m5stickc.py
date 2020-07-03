@@ -156,8 +156,11 @@ class HW(object):
     try:
       resp = urequests.request(method='GET', url=url)
     except OSError as ose:
-      raise HTTPRequestFailedError('_GetURI: {}'.format(ose))
+      raise HTTPRequestFailedError('_GetURI request: {}'.format(ose))
     if resp.status_code != 200:
       raise HTTPGetFailedError('Status code={}'.format(resp.status_code))
     
-    return resp.text
+    try:
+      return resp.text
+    except OSError as ose:
+      raise HTTPRequestFailedError('_GetURI resp.text: {}'.format(ose))

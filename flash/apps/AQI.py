@@ -324,9 +324,12 @@ class AQI(object):
 def main():
   aqi = AQI()
   while True:
-    aqi.Run()
-    print('Oops! Fell through')
-    aqi.hw.WaitMS(1)
+    try:
+      aqi.Run()
+    except Exception:
+      # Yes, I know that this is ugly, but it's for debugging bogies.
+      print('Oops! Fell through')
+      aqi.hw.WaitMS(1)
 
 # The M5StickC doesn't use the name __main__, it uses m5ucloud.
 if __name__ == '__main__' or __name__ == 'm5ucloud':
