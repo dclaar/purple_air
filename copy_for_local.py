@@ -4,10 +4,14 @@ from uiflow import *
 import urequests
 import wifiCfg
 
-ip_data = '{"ip_addr": "192.168.x.y"}\n'   #  <-- Purple air IP address here!
+sensor_location = '{"sensor_location": "192.168.x.y"}\n'   #  <-- Purple air IP address here!
 
 URL = 'https://raw.githubusercontent.com/dclaar/purple_air/main/flash'
-FILES = ['m5stickc.py', 'apps/AQI.py']
+FILES = [
+    'aqi.py',
+    'aqi_and_color.py',
+    'm5stickc.py',
+    'apps/LocalAQI.py']
 
 def ShowText(text, error=False):
   lcd.font(lcd.FONT_DejaVu18, rotate=0, transparent=True)
@@ -29,12 +33,12 @@ def Connect():
     wifiCfg.doConnect(ssid, password)
 
 
-if 'x.y' in ip_data:
+if 'x.y' in sensor_location:
    ShowText('Put in IP address!', error=True)
 
 Connect()
 with open(b'aqi.json', 'w+') as fh:
-  fh.writeln(str(ip_data))
+  fh.writeln(str(sensor_location))
 for file in FILES:
   url = '%s/%s' % (URL, file)
   lcd.print('copying %r' % file)
