@@ -38,10 +38,11 @@ if '00000' in sensor_location:
 
 Connect()
 with open(b'aqi_web.json', 'w+') as fh:
-  fh.writeln(str(sensor_location))
+  fh.write('%s\n' % sensor_location)
 for file in FILES:
   url = '%s/%s' % (URL, file)
-  lcd.print('copying %r' % file)
+  ShowText('copying %r' % file)
+  print('copying %r' % file)
   try:
     resp = urequests.request(method='GET', url=url)
   except OSError as ose:
@@ -53,5 +54,5 @@ for file in FILES:
     fh.write(str(resp.text))
 ShowText('DONE!')
 while True:
-  wait_ms(1)
+  wait_ms(10)
 

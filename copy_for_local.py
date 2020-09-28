@@ -4,7 +4,7 @@ from uiflow import *
 import urequests
 import wifiCfg
 
-sensor_location = '{"sensor_location": "192.168.x.y"}\n'   #  <-- Purple air IP address here!
+sensor_location = '{"sensor_location": "192.168.6.67"}\n'   #  <-- Purple air IP address here!
 
 URL = 'https://raw.githubusercontent.com/dclaar/purple_air/main/flash'
 FILES = [
@@ -38,10 +38,11 @@ if 'x.y' in sensor_location:
 
 Connect()
 with open(b'aqi.json', 'w+') as fh:
-  fh.writeln(str(sensor_location))
+  fh.write('%s\n' % sensor_location)
 for file in FILES:
   url = '%s/%s' % (URL, file)
-  lcd.print('copying %r' % file)
+  ShowText('copying %r' % file)
+  print('copying %r' % file)
   try:
     resp = urequests.request(method='GET', url=url)
   except OSError as ose:
@@ -53,5 +54,5 @@ for file in FILES:
     fh.write(str(resp.text))
 ShowText('DONE!')
 while True:
-  wait_ms(1)
+  wait_ms(10)
 
