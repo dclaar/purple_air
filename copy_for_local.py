@@ -4,7 +4,7 @@ from uiflow import *
 import urequests
 import wifiCfg
 
-sensor_location = '{"sensor_location": "192.168.6.67"}\n'   #  <-- Purple air IP address here!
+sensor_location = '{"sensor_location": "192.168.x.y"}\n'   #  <-- Purple air IP address here!
 
 URL = 'https://raw.githubusercontent.com/dclaar/purple_air/main/flash'
 FILES = [
