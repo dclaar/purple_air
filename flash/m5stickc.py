@@ -96,8 +96,9 @@ class Hardware():
     Brightness is controlled by the power chip. It is overall
     brightness, not foreground/background.
     """
-    #axp.setLcdBrightness(level)
-    lcd.setBrightness(level)
+    print('level=%s' % level)
+    axp.setLcdBrightness(level)
+    # lcd.setBrightness(level)  # This is for core, not M5StickC.
 
   def SetOrientation(self):
     """Automatically rotate display based on orientation.
