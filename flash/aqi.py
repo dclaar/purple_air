@@ -69,7 +69,7 @@ class Defaults():
     """
     if not self.defaults:
       self._getDefaults()
-    if name in self.defaults and value == self.defaults['name']:
+    if name in self.defaults and value == self.defaults[name]:
       return
     self.defaults[name] = value
     self._SaveDefaults()
@@ -180,8 +180,8 @@ class Correction(aqi_and_color.AqiAndColor):
     self.interface = interface
     self.correction_index = correction_index
     self.corrections= [
-        {'name': 'raw', 'function': self.NoCorrection, 'symbol': 'R'},
         {'name': 'none', 'function': self.PMNoCorrection, 'symbol': 'N'},
+        {'name': 'raw', 'function': self.NoCorrection, 'symbol': 'R'},
         {'name': 'epa', 'function': self.EPACorrection, 'symbol': 'E'},
         {'name': 'aqu', 'function': self.AQandUCorrection, 'symbol': 'A'},
         {'name': 'lrapa', 'function': self.LRAPACorrection, 'symbol': 'L'},
@@ -356,7 +356,7 @@ class AQI():
           self.corrections.DisplayAQI(self.aqi, self.color, self.text_color)
         else:
           aqi, color, text_color = self.corrections.GetAqiAndColor()
-        if not self.aqi or (self.aqi != aqi and self.color != color):
+        if not self.aqi or not self.color or self.aqi != aqi or self.color != color:
           # AQI changed: Update display.
           self.aqi = aqi
           self.color = color
