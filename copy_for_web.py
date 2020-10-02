@@ -4,10 +4,14 @@ from uiflow import *
 import urequests
 import wifiCfg
 
-ip_data = '{"ip_addr": "192.168.x.y"}\n'   #  <-- Purple air IP address here!
+sensor_location = '{"sensor_location": "00000"}\n'   #  <-- Purple air device number here!
 
 URL = 'https://raw.githubusercontent.com/dclaar/purple_air/main/flash'
-FILES = ['m5stickc.py', 'apps/AQI.py']
+FILES = [
+    'aqi.py',
+    'aqi_and_color.py',
+    'm5stickc.py',
+    'apps/WebAQI.py']
 
 def ShowText(text, error=False):
   lcd.font(lcd.FONT_DejaVu18, rotate=0, transparent=True)
@@ -29,15 +33,16 @@ def Connect():
     wifiCfg.doConnect(ssid, password)
 
 
-if 'x.y' in ip_data:
-   ShowText('Put in IP address!', error=True)
+if '00000' in sensor_location:
+   ShowText('Put in device number!', error=True)
 
 Connect()
-with open(b'aqi.json', 'w+') as fh:
-  fh.writeln(str(ip_data))
+with open(b'aqi_web.json', 'w+') as fh:
+  fh.write('%s\n' % sensor_location)
 for file in FILES:
   url = '%s/%s' % (URL, file)
-  lcd.print('copying %r' % file)
+  ShowText('copying %r' % file)
+  print('copying %r' % file)
   try:
     resp = urequests.request(method='GET', url=url)
   except OSError as ose:
@@ -49,5 +54,5 @@ for file in FILES:
     fh.write(str(resp.text))
 ShowText('DONE!')
 while True:
-  wait_ms(1)
+  wait_ms(10)
 
