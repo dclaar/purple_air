@@ -16,7 +16,7 @@ class PurpleWeb():
     self.pm2_5_atm = None
     self.pm2_5_cf_1 = None
     self.humidity = None
-    self.seconds_between = 30
+    self.seconds_between = 50
 
   def json_to_data(self, data):
     data_a = data['results'][0]
