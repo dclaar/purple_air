@@ -241,6 +241,7 @@ class Hardware():
     except NotImplementedError as nie:
       raise HTTPRequestFailedError('_GetURI request: {}'.format(nie))
     if resp.status_code != 200:
+      print('%s: %s' % (resp.status_code, resp.text))
       raise HTTPGetFailedError('Status code={}'.format(resp.status_code))
 
     try:
