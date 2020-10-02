@@ -170,7 +170,7 @@ class Hardware():
     Also good for debugging.
     """
     font = pygame.font.SysFont('DejaVu Sans Mono', 18, False, False)
-    text = font.render(error, True, RED)
+    text = font.render('%s' % error, True, RED)
     self.screen.fill(RED)
     self.screen.blit('%s' % text, [10, 10])
     pygame.display.flip()
