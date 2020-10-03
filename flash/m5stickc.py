@@ -4,7 +4,10 @@ from m5ui import *
 from uiflow import *
 import imu
 import wifiCfg
-import urequests
+try:
+  import nurequests as urequests
+except ImportError:
+  import urequests
 
 XACC = 0
 YACC = 1
@@ -96,7 +99,6 @@ class Hardware():
     Brightness is controlled by the power chip. It is overall
     brightness, not foreground/background.
     """
-    print('level=%s' % level)
     axp.setLcdBrightness(level)
     # lcd.setBrightness(level)  # This is for core, not M5StickC.
 
@@ -176,13 +178,11 @@ class Hardware():
     lcd.print(error, 10, 10, WHITE)
 
   def ClearSmallRight(self, bg_color):
-    self.SetOrientation()
     lcd.font(lcd.FONT_DejaVu24, rotate=0, transparent=True)
     lcd.textClear(140, 50, 'M', bg_color)
 
   def DisplaySmallRight(self, bg_color, text_color, text):
     """Display small text on the right."""
-    self.SetOrientation()
     lcd.font(lcd.FONT_DejaVu24, rotate=0, transparent=True)
     self.ClearSmallRight(bg_color)
     lcd.print(text, 140, 50, text_color)

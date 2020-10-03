@@ -9,6 +9,7 @@ except ImportError:
 
 # If you don't like the "marching ants" chaser, set to False.
 CHASER = True
+FORGETFUL_USER_MINUTES = 2
 
 # This is only approximate, but close enough.
 SECONDS_TO_LOOP_COUNTER_MULTIPLIER = 100
@@ -154,9 +155,11 @@ class Brightness():
       B: Go to next brightness (up or down).
     """
     self.DrawGauge(bg_color)
+    forgetful_user_count = (SECONDS_TO_LOOP_COUNTER_MULTIPLIER * 60 *
+                            FORGETFUL_USER_MINUTES)
     while True:
       button = self.hw.CheckForButton()
-      if button == hardware.BUTTONA:
+      if button == hardware.BUTTONA or forgetful_user_count <= 0:
         return self.brightness_index
       elif button == hardware.BUTTONB:
         self.brightness_index = self.brightness_index + self.brightness_incr
@@ -169,6 +172,7 @@ class Brightness():
         self.hw.SetBrightness(self.BRIGHTNESS[self.brightness_index])
         self.DrawGauge(bg_color)
       self.hw.WaitMS(10)
+      forgetful_user_count -= 1
 
 
 class Correction(aqi_and_color.AqiAndColor):
@@ -255,10 +259,12 @@ class Correction(aqi_and_color.AqiAndColor):
       B: Go to next correction.
     """
     counter = 0
+    forgetful_user_count = (SECONDS_TO_LOOP_COUNTER_MULTIPLIER * 60 *
+                            FORGETFUL_USER_MINUTES)
     display = True
     while True:
       button = self.hw.CheckForButton()
-      if button == hardware.BUTTONA:
+      if button == hardware.BUTTONA or forgetful_user_count <= 0:
         return self.correction_index
       elif button == hardware.BUTTONB:
         self.correction_index += 1
@@ -273,6 +279,7 @@ class Correction(aqi_and_color.AqiAndColor):
           else:
             self.hw.ClearSmallRight(color)
       self.hw.WaitMS(10)
+      forgetful_user_count -= 1
 
 
 class AQI():
@@ -304,6 +311,9 @@ class AQI():
     Raises:
       BadJSONError: We couldn't parse the data we got back into JSON.
       HTTPError: If GetURI ran into a http-related error.
+
+    This is a bit sloppy, in that it catches any hardware Error, rather
+    than specific ones, e.g. HTTPRequestFailedError & HTTPGetFailedError.
     """
     try:
       resp = self.hw.GetURI(self.url)
@@ -352,7 +362,7 @@ class AQI():
         except Error as e:
           # Show the error and wait a bit, then re-show previous AQI.
           self.hw.ShowError(e)
-          self.hw.WaitMS(1000)
+          self.hw.WaitMS(5000)
           self.corrections.DisplayAQI(self.aqi, self.color, self.text_color)
         else:
           aqi, color, text_color = self.corrections.GetAqiAndColor()

@@ -88,9 +88,12 @@ Then start displaying the air quality.
 ## Other Features
 
 - Uses accelerometer to display text correctly with device on either side.
+  - Note that this pauses during sub-modes (brightness & corrections).
 - Uses the WiFi credentials that were setup in M5Burner.
 - Heartbeat shows that the unit is working, even if the AQI isn't changing.
 - There is also a "marching ants" chaser to show that it is working. See below.
+- If one is in a sub-mode (brightness & corrections) and forgets to exit,
+  it will exit back to the main menu eventually.
 
 
 ### "Marching ants"
@@ -146,6 +149,17 @@ so I didn't include it.
 ## Development
 
 _If you want to hack on this, read on_.
+
+### urequest, I request, punting redirects
+
+The Purple Air site appears to sometimes throw redirects, which the M5stack
+urequest module punts on. I am copying a
+[urequest that supports redirection](
+https://github.com/pfalcon/pycopy-lib/tree/master/urequests), with a one-line
+modification to print the redirect on the console. (Open Source for the win!)
+Eventually I will either modify the setup script to just copy it from the original source, or just catch the redirect punt, but for now I want the extra debug.
+Note that the setup scripts do **not** copy this file, as it is
+for development only.
 
 ### Simulating the hardware
 
