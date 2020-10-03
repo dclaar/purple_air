@@ -153,12 +153,10 @@ _If you want to hack on this, read on_.
 ### urequest, I request, punting redirects
 
 The Purple Air site appears to sometimes throw redirects, which the M5stack
-urequest module punts on. I am copying a
-[urequest that supports redirection](
-https://github.com/pfalcon/pycopy-lib/tree/master/urequests), with a one-line
-modification to print the redirect on the console. (Open Source for the win!)
-Eventually I will either modify the setup script to just copy it from the original source, or just catch the redirect punt, but for now I want the extra debug.
-Note that the setup scripts do **not** copy this file, as it is
+urequest module punts on. I have modified it to support redirection, based on
+code from a [urequest that supports redirection](
+https://github.com/pfalcon/pycopy-lib/tree/master/urequests).
+Note that the setup scripts do **not** currently copy this file, as it is
 for development only.
 
 ### Simulating the hardware
