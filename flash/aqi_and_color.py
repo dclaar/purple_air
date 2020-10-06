@@ -22,23 +22,6 @@ def RGBStringToList(rgb_string):
 class AqiAndColor():
   """Class for calculating AQI and the color to represent it."""
 
-  def pickRGBA(self, color1, color2, weight, alpha):
-    """Pick color on gradient with alpha.
-
-      Args:
-        color1: The color on the 'left'
-        color2: The color on the 'right'
-        weight: is a number between 0.00 and 1.00 that specifies the position
-            of the color from the gradient, with 0 returning color1 and 0.5
-            returning 50% of the way between the two colors and so on.
-        alpha: the transparency value of the RGBA color.
-    """
-    print(color1 + ':' + color2 + ':' + weight, file=sys.stderr)
-    if alpha == undefined:
-      alpha = 1.0
-    c = pickRGB(color1, color2, weight)
-    return 'rgba(%d, %d, %d, %d)' %  (c[0], c[1], c[2], alpha)
-
   def pickRGB(self, color1, color2, weight):
     """
     Pick color on gradient with no alpha
@@ -49,11 +32,7 @@ class AqiAndColor():
           of the color from the gradient, with 0 returning color1 and 0.5
           returning 50% of the way between the two colors and so on.
     """
-    w = weight * 2 - 1
-    w1 = (w / 1 + 1) / 2
-    w2 = 1 - w1
-
-    rgb = map(round(color1[i] * w1 + color2[i] * w2), (0,1,2))
+    rgb = [round(color1[c] + weight * (color2[c] - color1[c])) for c in range(3)]
     return rgb
 
   def getAQIColorRGB(self, aqi):
@@ -64,25 +43,26 @@ class AqiAndColor():
       Returns:
         Array of [r, g, b]
     """
+    rgb_breaks = [
+        (0, [0, 228, 0]),  # 0-50
+        (51, [255, 255, 0]),  # 51-100
+        (101, [255, 126, 0]),  # 101-150
+        (151, [255, 0, 0]),  # 151-200
+        (201, [153, 0, 76]),  # 201-300
+        (301, [126, 0, 35]),  # 301+
+    ]
+
     if aqi < 0:
       return [200, 200, 200]
-
-    if aqi >= 401:
+    if aqi >= 301:
       return [126, 0, 35]  # RGB2HTML(126, 0, 35)
-    elif aqi >= 301:
-      return [126, 0, 35]  # RGB2HTML(126, 0, 35)
-    elif aqi >= 201:
-      return [153, 0, 76]  # RGB2HTML(153, 0, 76)
-    elif aqi >= 151:
-      return [255, 0, 0]  # RGB2HTML(255, 0, 0)
-    elif aqi >= 101:
-      return [255, 126, 0]  # RGB2HTML(255, 126, 0)
-    elif aqi >= 51:
-      return [255, 255, 0]  # RGB2HTML(255, 255, 0)
-    elif aqi >= 0:
-      return [0, 228, 0]  # RGB2HTML(0, 228, 0)
-    else:
-      return []
+    for b in range(len(rgb_breaks)):
+      if aqi+1 <= rgb_breaks[b][0]:
+        color = self.pickRGB(
+            rgb_breaks[b-1][1], rgb_breaks[b][1],
+            (aqi - rgb_breaks[b-1][0]) / (rgb_breaks[b][0] - 1 - rgb_breaks[b-1][0]))
+        print('color=%s' % color)
+        return color
 
   def _calcAQI(self, pm25, aqi_hi, aqi_low, pm25_hi, pm25_low):
     """Calculate AQI from PM2.5
