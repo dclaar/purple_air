@@ -178,7 +178,7 @@ class Hardware():
   def ClearSmallRight(self, bg_color):
     font = pygame.font.SysFont('DejaVu Sans Mono', 24, False, False)
     text_size = font.size('E')
-    pygame.draw.rect(self.screen, bg_color, [140, 50, *text_size])
+    pygame.draw.rect(self.screen, bg_color, [140, 30, *text_size])
     pygame.display.flip()
 
   def DisplaySmallRight(self, bg_color, text_color, text_string):
@@ -186,7 +186,7 @@ class Hardware():
     self.ClearSmallRight(bg_color)
     font = pygame.font.SysFont('DejaVu Sans Mono', 24, False, False)
     text = font.render('%s' % text_string, True, text_color)
-    self.screen.blit(text, [140, 50])
+    self.screen.blit(text, [140, 30])
     pygame.display.flip()
 
   def DisplayBig(self, bg_color, text_color, text):

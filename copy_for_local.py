@@ -11,6 +11,7 @@ FILES = [
     'aqi.py',
     'aqi_and_color.py',
     'm5stickc.py',
+    'nurequests.py',
     'apps/LocalAQI.py']
 
 def ShowText(text, error=False):

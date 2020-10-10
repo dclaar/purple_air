@@ -18,7 +18,12 @@ class PurpleLocal():
     self.humidity = None
     self.seconds_between = 10
 
-  def json_to_data(self, data):
+  def dict_to_data(self, data):
+    """Extract device's specific data to known variables.
+
+    Args:
+      data: Dictionary of sensor(s) data.
+    """
     self.pm2_5_atm = (data['pm2_5_atm'] + data['pm2_5_atm_b'])/2
     self.pm2_5_cf_1 = (data['pm2_5_cf_1'] + data['pm2_5_cf_1_b'])/2
     self.aqi = (data['pm2.5_aqi'] + data['pm2.5_aqi_b'])/2

@@ -320,10 +320,10 @@ class AQI():
     except hardware.Error as hwe:
       raise HTTPError(hwe)
     try:
-      weather_json = json.loads(resp)  # Could raise
+      weather_dict = json.loads(resp)  # Could raise
     except ValueError:
       raise BadJSONError("GetURI: Couldn't load json")
-    self.interface.json_to_data(weather_json)
+    self.interface.dict_to_data(weather_dict)
 
   def Run(self):
     """Display AQI from purple air device.

@@ -18,14 +18,31 @@ class PurpleWeb():
     self.humidity = None
     self.seconds_between = 50
 
-  def json_to_data(self, data):
-    data_a = data['results'][0]
-    data_b = data['results'][1]
-    self.pm2_5_atm = (float(data_a['pm2_5_atm']) + float(data_b['pm2_5_atm']))/2
-    self.pm2_5_cf_1 = (float(data_a['pm2_5_cf_1']) + float(data_b['pm2_5_cf_1']))/2
+  def dict_to_data(self, data):
+    """Extract device's specific data to known variables.
+
+    Args:
+      data: Dictionary of sensor(s) data.
+    """
+    num_results = 0
+    pm2_5_atm = 0
+    pm2_5_cf_1 = 0
+    for sensor in data['results']:
+      if 'humidity' in sensor:
+        self.humidity = float(sensor['humidity'])
+
+      if 'Flag' in sensor and sensor['Flag'] == 1:
+        continue
+
+      pm2_5_atm += float(sensor['pm2_5_atm'])
+      pm2_5_cf_1 += float(sensor['pm2_5_cf_1'])
+      num_results += 1
+
+    if num_results:
+      self.pm2_5_atm = pm2_5_atm / num_results
+      self.pm2_5_cf_1 = pm2_5_cf_1 / num_results
     self.aqi = -1
     self.color = [200, 200, 200]
-    self.humidity = float(data_a['humidity'])
 
 
 

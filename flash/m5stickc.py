@@ -179,13 +179,13 @@ class Hardware():
 
   def ClearSmallRight(self, bg_color):
     lcd.font(lcd.FONT_DejaVu24, rotate=0, transparent=True)
-    lcd.textClear(140, 50, 'M', bg_color)
+    lcd.textClear(140, 30, 'M', bg_color)
 
   def DisplaySmallRight(self, bg_color, text_color, text):
     """Display small text on the right."""
     lcd.font(lcd.FONT_DejaVu24, rotate=0, transparent=True)
     self.ClearSmallRight(bg_color)
-    lcd.print(text, 140, 50, text_color)
+    lcd.print(text, 140, 30, text_color)
 
   def DisplayBig(self, bg_color, text_color, text):
     """Display text using the biggest font possible.
