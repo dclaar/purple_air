@@ -80,12 +80,14 @@ def request(method, url, data=None, json=None, headers={}, stream=None):
             s.write(data)
 
         l = s.readline()
-        #print(l)
-        l = l.split(None, 2)
-        status = int(l[1])
+        l_split = l.split(None, 2)
+        try:
+          status = int(l_split[1])
+        except IndexError:
+          raise ValueError('bad status line: %r' % l)
         reason = ""
-        if len(l) > 2:
-            reason = l[2].rstrip()
+        if len(l_split) > 2:
+            reason = l_split[2].rstrip()
         while True:
             l = s.readline()
             if not l or l == b"\r\n":

@@ -236,10 +236,8 @@ class Hardware():
     self.CheckWifi()
     try:
       resp = urequests.request(method='GET', url=url)
-    except OSError as ose:
-      raise HTTPRequestFailedError('_GetURI request: {}'.format(ose))
-    except NotImplementedError as nie:
-      raise HTTPRequestFailedError('_GetURI request: {}'.format(nie))
+    except (OSError, ValueError, NotImplementedError) as err:
+      raise HTTPRequestFailedError('_GetURI request: {}'.format(err))
     if resp.status_code != 200:
       print('%s: %s' % (resp.status_code, resp.text))
       raise HTTPGetFailedError('Status code={}'.format(resp.status_code))
