@@ -50,14 +50,13 @@ def main():
   """Main loop. Runs forever."""
   interface = PurpleWeb()
   my_aqi = aqi.AQI(interface)
-  my_aqi.Run()
-  sys.exit(1)
   while True:
     try:
       my_aqi.Run()
     except Exception as e:
       # Yes, I know that this is ugly, but it's for debugging bogies.
-      print('Oops! Fell through: %s' % e)
+      print('Oops! Fell through! %s:%s' % (e, sys.print_exception))
+      my_aqi.hw.ShowError(str(e))
       my_aqi.hw.WaitMS(10)
 
 # The M5StickC doesn't use the name __main__, it uses m5ucloud.
