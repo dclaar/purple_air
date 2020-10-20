@@ -61,7 +61,6 @@ class AqiAndColor():
         color = self.pickRGB(
             rgb_breaks[b-1][1], rgb_breaks[b][1],
             (aqi - rgb_breaks[b-1][0]) / (rgb_breaks[b][0] - 1 - rgb_breaks[b-1][0]))
-        print('color=%s' % color)
         return color
 
   def _calcAQI(self, pm25, aqi_hi, aqi_low, pm25_hi, pm25_low):
