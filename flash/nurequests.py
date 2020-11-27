@@ -56,6 +56,9 @@ def request(method, url, data=None, json=None, headers={}, stream=None):
 
     s = usocket.socket(ai[0], ai[1], ai[2])
     try:
+        # TODO https://docs.micropython.org/en/latest/library/usocket.html
+        # Use uselect.poll() instead of settimeout.
+        s.settimeout(10)
         s.connect(ai[-1])
         if proto == "https:":
             s = ussl.wrap_socket(s, server_hostname=host)

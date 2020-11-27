@@ -1,1 +1,1 @@
-{"sensor_location": "192.168.6.67", "url": "http://192.168.6.67/json?live=false", "name": 0, "brightness": 3, "correction_index": 1}
+{"brightness": 0, "sensor_location": "192.168.6.89", "url": "http://192.168.6.89/json?live=false", "correction_index": 0}
