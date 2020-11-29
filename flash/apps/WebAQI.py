@@ -55,7 +55,7 @@ def main():
       my_aqi.Run()
     except Exception as e:
       # Yes, I know that this is ugly, but it's for debugging bogies.
-      print('Oops! Fell through! %s:%s' % (e, sys.print_exception))
+      print('Oops! Fell through!\n:%s' % sys.print_exception(e))
       my_aqi.hw.ShowError(str(e))
       my_aqi.hw.WaitMS(10)
 
