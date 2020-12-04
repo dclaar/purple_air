@@ -236,7 +236,8 @@ class Hardware():
     self.CheckWifi()
     try:
       resp = urequests.request(method='GET', url=url)
-    except (OSError, ValueError, NotImplementedError) as err:
+    except (OSError, ValueError, NotImplementedError, IndexError) as err:
+      # IndexError: https://github.com/micropython/micropython-lib/issues/300
       raise HTTPRequestFailedError('_GetURI request: {}'.format(err))
     if resp.status_code != 200:
       print('%s: %s' % (resp.status_code, resp.text))
