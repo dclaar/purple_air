@@ -1,6 +1,7 @@
 import math
 import sys
 import time
+import traceback
 import pygame
 import requests as urequests
 
@@ -94,6 +95,8 @@ class Hardware():
           sys.exit()
     return button
 
+  def print_exception(self, e):
+    traceback.print_exception(None, e, sys.exc_info()[2])
 
   def SetBrightness(self, level):
     """Set the brightness.
@@ -170,9 +173,9 @@ class Hardware():
     Also good for debugging.
     """
     font = pygame.font.SysFont('DejaVu Sans Mono', 18, False, False)
-    text = font.render('%s' % error, True, RED)
+    text = font.render('%s' % error, True, WHITE)
     self.screen.fill(RED)
-    self.screen.blit('%s' % text, [10, 10])
+    self.screen.blit(text, [10, 10])
     pygame.display.flip()
 
   def ClearSmallRight(self, bg_color):
