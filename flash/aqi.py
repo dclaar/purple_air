@@ -229,7 +229,7 @@ class Correction(aqi_and_color.AqiAndColor):
     else:
       pm = self.corrections[self.correction_index]['function']()
       aqi = self.aqiFromPM(pm)
-      color = self.hw.ColorListToNative(self.getAQIColorRGB(aqi))  # TODO: Gradient
+      color = self.hw.ColorListToNative(self.getAQIColorRGB(aqi))
     text_color = hardware.WHITE if aqi >= 150 else hardware.BLACK
     return aqi, color, text_color
 
@@ -361,17 +361,18 @@ class AQI():
           self.GetData()
         except Error as e:
           # Show the error and wait a bit, then re-show previous AQI.
+          print('GetData raised: %r' % e)
           self.hw.ShowError(e)
           self.hw.WaitMS(5000)
           self.corrections.DisplayAQI(self.aqi, self.color, self.text_color)
         else:
           aqi, color, text_color = self.corrections.GetAqiAndColor()
-        if not self.aqi or not self.color or self.aqi != aqi or self.color != color:
-          # AQI changed: Update display.
-          self.aqi = aqi
-          self.color = color
-          self.text_color = text_color
-          self.corrections.DisplayAQI(self.aqi, self.color, self.text_color)
+          if not self.aqi or not self.color or self.aqi != aqi or self.color != color:
+            # AQI changed: Update display.
+            self.aqi = aqi
+            self.color = color
+            self.text_color = text_color
+            self.corrections.DisplayAQI(self.aqi, self.color, self.text_color)
       if (self.loop_count % HEARTBEAT_CHECK_POINT) == 0:
         heart_color = hardware.BLUE if aqi > 100 else hardware.RED
         self.hw.HeartBeat(heart_color if self.heart_beat else self.color)

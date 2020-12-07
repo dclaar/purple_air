@@ -3,6 +3,7 @@ from m5stack import *
 from m5ui import *
 from uiflow import *
 import imu
+import sys
 import wifiCfg
 try:
   import nurequests as urequests
@@ -78,6 +79,9 @@ class Hardware():
       return BUTTONB
     else:
       return None
+
+  def print_exception(self, e):
+    sys.print_exception(e)
 
   def ColorListToNative(self, color_list):
     """Utility routine to convert string list [r, g, b] to HW's native format.
@@ -175,7 +179,9 @@ class Hardware():
     self.SetOrientation()  # Always show text "right side up".
     lcd.font(lcd.FONT_DejaVu18, rotate=0, transparent=True)
     lcd.fill(RED)
-    lcd.print(error, 10, 10, WHITE)
+    print('ShowError: error=%r' % error)
+    self.print_exception(error)
+    lcd.print('%s' % error, 10, 10, WHITE)
 
   def ClearSmallRight(self, bg_color):
     lcd.font(lcd.FONT_DejaVu24, rotate=0, transparent=True)
@@ -204,7 +210,7 @@ class Hardware():
     """
     try:
       # >= 1.5
-      self.ssid, self.password = wifiCfg.deviceCfg.wifi_read_from_flash()
+      self.ssid, self.password = wifiCfg.deviceCfg.get_wifi()
     except AttributeError:
       try:
         # < 1.4
