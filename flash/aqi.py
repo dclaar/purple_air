@@ -205,10 +205,15 @@ class Correction(aqi_and_color.AqiAndColor):
 
   def EPACorrection(self):
     """Use the EPA correction from
-    https://cfpub.epa.gov/si/si_public_file_download.cfm?p_download_id=540979&Lab=CEMM
+    https://youtu.be/G7CNziDkUok?t=1779
+
     """
-    return (0.52*self.interface.pm2_5_cf_1
-            - 0.085 * self.interface.humidity + 5.71)
+    if self.interface.pm2_5_cf_1 <= 343:
+      return (0.52 * self.interface.pm2_5_cf_1
+            - 0.086 * self.interface.humidity + 5.75)
+    else:
+      return (0.46 * self.interface.pm2_5_cf_1
+            + 3.93 * 10**-4 * self.interface.pm2_5_cf_1**2 + 2.97)
 
   def AQandUCorrection(self):
     """Use the AQandU correction from Purple Air."""
