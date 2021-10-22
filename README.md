@@ -123,11 +123,11 @@ the internet provide that value. This is represented by "N" on the display.
 
 ### EPA
 
-The EPA just recently [did a study](
-https://cfpub.epa.gov/si/si_public_record_report.cfm?Lab=CEMM&dirEntryId=348236)
-on the accuracy of the Purple Air sensors. This implements their suggested
-correction factor, and shows as an "E" on the display. Note that, at very
-high levels, this correction may under-report.
+The EPA just recently updated their correction factor to use [separate
+equations for low and high PM2.5](
+(https://youtu.be/G7CNziDkUok?t=1779), and this is now used. This is represented
+by an "E" on the display.
+([The original study on the accuracy of Purple Air sensors](https://cfpub.epa.gov/si/si_public_record_report.cfm?Lab=CEMM&dirEntryId=348236)).
 
 ### LRAPA
 
@@ -146,6 +146,12 @@ The results from this study are "it depends on the event", but their
 _current_ correction factor is pretty close to EPA and LRPA,
 so I didn't include it.
 
+### PM2.5
+
+Sometimes you just want the raw number, maybe to see if things are working.
+The raw PM2.5 value is represented by "P"; the color is just gray.
+
+
 ## Development
 
 _If you want to hack on this, read on_.
@@ -156,8 +162,6 @@ The Purple Air site appears to sometimes throw redirects, which the M5stack
 urequest module punts on. I have modified it to support redirection, based on
 code from a [urequest that supports redirection](
 https://github.com/pfalcon/pycopy-lib/tree/master/urequests).
-Note that the setup scripts do **not** currently copy this file, as it is
-for development only.
 
 ### Simulating the hardware
 
@@ -183,7 +187,11 @@ simulation if they are not.
 1. You will need to modify PYTHONPATH to run the simulation (see below).
 1. It's probably easiest to run out of the `flash` directory:
    ```
-   purple_air\flash>python3 apps/PurpleLocal.py
+   purple_air\flash>python3 apps/LocalAQI.py
+   ```
+   or
+   ```
+   purple_air\flash>python3 apps/WebAQI.py
    ```
 
 #### PYTHONPATH
@@ -217,4 +225,19 @@ Here is a handy way to see if the path looks right:
 
 ```
 python -c "import sys; print('\n'.join(sys.path))"
+```
+
+### Unit Tests
+
+I wrote a few unit tests. To run these, you will need `mock` and
+`parameterized`:
+
+```
+pip install mock
+pip install parameterized
+```
+
+Then, just:
+```
+python -m unittest
 ```

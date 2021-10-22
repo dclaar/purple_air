@@ -189,6 +189,7 @@ class Correction(aqi_and_color.AqiAndColor):
         {'name': 'epa', 'function': self.EPACorrection, 'symbol': 'E'},
         {'name': 'aqu', 'function': self.AQandUCorrection, 'symbol': 'A'},
         {'name': 'lrapa', 'function': self.LRAPACorrection, 'symbol': 'L'},
+        {'name': 'pm25', 'function': self.PMNoCorrection, 'symbol': 'P'},
     ]
 
   def CorrectionSymbol(self):
@@ -209,19 +210,22 @@ class Correction(aqi_and_color.AqiAndColor):
 
     """
     if self.interface.pm2_5_cf_1 <= 343:
-      return (0.52 * self.interface.pm2_5_cf_1
-            - 0.086 * self.interface.humidity + 5.75)
+      aqi = (0.52 * self.interface.pm2_5_cf_1 -
+          0.086 * self.interface.humidity + 5.75)
     else:
-      return (0.46 * self.interface.pm2_5_cf_1
-            + 3.93 * 10**-4 * self.interface.pm2_5_cf_1**2 + 2.97)
+      aqi = (0.46 * self.interface.pm2_5_cf_1 +
+          3.93 * 10**-4 * self.interface.pm2_5_cf_1**2 + 2.97)
+    return 0 if aqi < 0 else aqi
 
   def AQandUCorrection(self):
     """Use the AQandU correction from Purple Air."""
-    return 0.778 * self.interface.pm2_5_atm + 2.65
+    aqi = 0.778 * self.interface.pm2_5_atm + 2.65
+    return 0 if aqi < 0 else aqi
 
   def LRAPACorrection(self):
     """Similar to LBNA results, good for fires."""
-    return 0.5 * self.interface.pm2_5_atm - 0.68
+    aqi = 0.5 * self.interface.pm2_5_atm - 0.68
+    return 0 if aqi < 0 else aqi
 
 
   def GetAqiAndColor(self):
@@ -231,6 +235,10 @@ class Correction(aqi_and_color.AqiAndColor):
     """
     if self.corrections[self.correction_index]['name'] == 'raw':
       aqi, color = self.corrections[self.correction_index]['function']()
+    elif self.corrections[self.correction_index]['name'] == 'pm25':
+      aqi = self.corrections[self.correction_index]['function']()
+      color = self.hw.ColorListToNative([200, 200, 200])
+      text_color = hardware.BLACK
     else:
       pm = self.corrections[self.correction_index]['function']()
       aqi = self.aqiFromPM(pm)
