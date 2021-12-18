@@ -3,7 +3,7 @@ import json
 import aqi_and_color
 
 try:
-  import gui as hardware
+  import gui_m5stick as hardware
 except ImportError:
   import m5stickc as hardware
 
@@ -355,8 +355,8 @@ class AQI():
     doing anything anyway.
 
     Button usage:
-    A: Call Brightness-setting routine.
-    B: Call Demo routine: Displays possible colors and values.
+    A: Change Correction factor.
+    B: Change brightness.
     """
     self.hw = hardware.Hardware()
     self.defaults = Defaults(
