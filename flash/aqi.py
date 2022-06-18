@@ -50,8 +50,10 @@ class Defaults():
         raise BadJSONError('Bad JSON: {}'.format(self.config_file))
     if 'sensor_location' not in self.defaults:
       raise Error('"sensor_location" not found in {}'.format(self.config_file))
-    self.defaults['url'] = self.url_template.format(
-        sensor_location=self.defaults['sensor_location'])
+    kwargs = {'sensor_location': self.defaults['sensor_location']}
+    if 'read_api_key' in self.defaults:
+      kwargs['read_api_key'] = self.defaults['read_api_key']
+    self.defaults['url'] = self.url_template.format(**kwargs)
 
   def _SaveDefaults(self):
     """Save default to "disk" for next time."""

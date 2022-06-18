@@ -13,16 +13,24 @@ You can copy either or both versions to the stick through the 2 scripts.
    repo and paste it into the window.
 
    - `copy_for_local.py`: Modify this line with the IP address of your
-     purple air device:
+     Purple Air device:
      ```
      file_data = '{"sensor_location": "192.168.x.y"}\n'
       ```
-   - `copy_for_web.py`: Modify this line with the device ID of the 
-     purple air device you want to "stalk":
-     ```
-     file_data = '{"sensor_location": "00000"}\n'
-     ```
+   - `copy_for_web.py`: There are a couple of things to modify:
+     - `sensor_location`: This is the 'sensor index' of the Purple
+       Air device on the web, as explained in the README.
+     - `read_api_key`: This is the API key that you got from Purple Air.
+
+    ```
+    initial_config = (
+      '{"sensor_location": '
+      '"00000", '          #  <-- Purple Air sensor index here!
+      '"read_apk_key": '
+      '"########-####-####-####-############"' #  <-- API read key here!
+      '}\n')
+    ```
 
 1. Click the triangle "play" button. This will copy the program to the
-`flash/apps` directory, and the supporting library and json config file to the
-`flash` directory. You will not need the copy_for script any more.
+`flash/apps` directory, and the supporting library and json config file
+ to the `flash` directory. You will not need the copy_for script any more.
