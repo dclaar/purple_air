@@ -7,7 +7,7 @@ import wifiCfg
 initial_config = (
     '{"sensor_location": '
     '"00000", '          #  <-- Purple air sensor index here!
-    '"read_apk_key": '
+    '"read_api_key": '
     '"########-####-####-####-############"' #  <-- API read key here!
     '}')
 
