@@ -4,7 +4,7 @@ from aqi_and_color import RGBStringToList
 import sys
 
 CONFIG_FILE = 'aqi_web.json'
-URL_TEMPLATE = 'https://www.purpleair.com/json?show={sensor_location}'
+URL_TEMPLATE = 'https://api.purpleair.com/v1/sensors/{sensor_location}?api_key={read_api_key}'
 
 
 class PurpleWeb():
@@ -24,26 +24,13 @@ class PurpleWeb():
     Args:
       data: Dictionary of sensor(s) data.
     """
-    num_results = 0
-    pm2_5_atm = 0
-    pm2_5_cf_1 = 0
-    for sensor in data['results']:
-      if 'humidity' in sensor:
-        self.humidity = float(sensor['humidity'])
-
-      if 'Flag' in sensor and sensor['Flag'] == 1:
-        continue
-
-      pm2_5_atm += float(sensor['pm2_5_atm'])
-      pm2_5_cf_1 += float(sensor['pm2_5_cf_1'])
-      num_results += 1
-
-    if num_results:
-      self.pm2_5_atm = pm2_5_atm / num_results
-      self.pm2_5_cf_1 = pm2_5_cf_1 / num_results
+    sensor = data['sensor']
+    self.pm2_5_atm = sensor['pm2.5_atm']
+    self.pm2_5_cf_1 = sensor['pm2.5_cf_1']
+    if 'humidity' in sensor:
+      self.humidity = float(sensor['humidity'])
     self.aqi = -1
     self.color = [200, 200, 200]
-
 
 
 def main():

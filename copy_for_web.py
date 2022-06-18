@@ -4,7 +4,12 @@ from uiflow import *
 import urequests
 import wifiCfg
 
-sensor_location = '{"sensor_location": "00000"}\n'   #  <-- Purple air device number here!
+initial_config = (
+    '{"sensor_location": '
+    '"00000", '          #  <-- Purple air sensor index here!
+    '"read_apk_key": '
+    '"########-####-####-####-############"' #  <-- API read key here!
+    '}')
 
 URL = 'https://raw.githubusercontent.com/dclaar/purple_air/main/flash'
 FILES = [
@@ -24,22 +29,23 @@ def ShowText(text, error=False):
 
 def Connect():
   try:
-    ssid, password = wifiCfg.deviceCfg.wifi_read_from_flash()
+    ssid, password = wifiCfg.deviceCfg.get_wifi()
   except AttributeError:
     try:
       ssid, password = wifiCfg.wifi_read_from_flash()
-    except AttributeError:
+    except (AttributeError, ValueError):
       ShowText('no SSID found', error=True)
   if not (wifiCfg.wlan_sta.isconnected()):
     wifiCfg.doConnect(ssid, password)
 
-
-if '00000' in sensor_location:
-   ShowText('Put in device number!', error=True)
+if '00000' in initial_config:
+   ShowText('Put in sensor index!', error=True)
+if '#####' in initial_config:
+   ShowText('Put in API read key!', error=True)
 
 Connect()
 with open(b'aqi_web.json', 'w+') as fh:
-  fh.write('%s\n' % sensor_location)
+  fh.write('%s\n' % initial_config)
 for file in FILES:
   url = '%s/%s' % (URL, file)
   ShowText('copying %r' % file)
@@ -53,7 +59,6 @@ for file in FILES:
 
   with open(file, 'w+') as fh:
     fh.write(str(resp.text))
-ShowText('DONE!')
+ShowText('DONE!', error=True)
 while True:
   wait_ms(10)
-

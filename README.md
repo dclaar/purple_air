@@ -9,8 +9,10 @@ https://m5stack.com/products/stick-c) "finger" computer.
 The local version Uses the local JSON endpoint's built-in 120 second average,
 which is updated every 10 seconds.
 
-The web version uses the default values for the purpleair.com JSON endpoint,
-which appears to be a 10 minute average. This value is read every 30 seconds.
+The web version uses the default values from
+api.purpleair.com, which does not indicate
+what this represents (instantaneous? some
+average?). This value is read every 50 seconds.
 
 See my [blog post](
 https://seeingclaarly.blogspot.com/2020/05/seeing-airquality.html) for more
@@ -32,17 +34,29 @@ I've set up a _relatively_ simple [set of steps](copy_to_stick.md) to
 use the UiFlow GUI to make the copy. 
 
 No matter how you get the code onto the M5StickC, you will need to
-provide either the IP address of your local unit or the "device number"
-of the station that you want to monitor. To get the web "device number",
-click on the station you want to track, and the URL will change to something
-like this:
+provide either the IP address of your local unit or the "sensor index"
+of the station that you want to monitor and an API key. To get the web "sensor
+index", click on the station you want to track, and the URL will change to
+something like this:
 
 ```
 https://www.purpleair.com/map?opt=1/mAQI/a10/cC0&select=38889#15/37.25548/-121.8908
 ```
 
-This shows you the device number of `38889` and the station's Latitude and
-Longitude.
+This shows you the sensor index of `38889` (and the station's Latitude and Longitude).
+
+While you only need an IP address to read the data locally, you need the
+sensor index __and an API Key__ to read the data from the web. You will need
+to email [contact@purpleair.com](mailto:contact@purpleair.com) to get yours.
+They will send you back
+two keys: A "Read Key" and a "Write Key". As we will be _reading_ data, that's
+the one you want.
+
+If you don't use the `copy_for_web.py` or `copy_for_local.py` scripts, you
+will need to modify `aqi.json` for local and `aqi_web.json` for the web:
+They are pretty self-explanatory: Fill in `sensor_location` with your IP
+address for local, or your sensor index and
+`read_api_key` for web.
 
 ## Run
 
